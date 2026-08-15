@@ -88,10 +88,7 @@ The backend follows a **layered architecture** with clear separation of concerns
 
 ---
 
-## 🖼 Project Showcase
-
-Here are **15 high-quality images** that capture the essence and functionality of this SaaS backend.  
-*(All images are open-source from Unsplash.)*
+## 🖼 Core Visuals
 
 <table>
   <tr>
