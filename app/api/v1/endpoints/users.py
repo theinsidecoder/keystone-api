@@ -2,8 +2,7 @@ from fastapi import APIRouter, Depends
 from app.api.deps import get_current_user
 from app.models.user import User
 from app.schemas.user import UserOut
-from app.core.cache import get_cache, set_cache, delete_cache
-import json
+from app.core.cache import get_cache, set_cache
 
 router = APIRouter()
 

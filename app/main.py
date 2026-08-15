@@ -1,13 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-from app.api.v1.api import api_router
 from app.core.config import settings
 from app.core.logging import setup_logging
 from app.db.init_db import init_db
 import logging
+
+from app.api.v1.endpoints import auth, users, payments, tasks, health
 
 setup_logging()
 logger = logging.getLogger(__name__)
@@ -16,7 +17,7 @@ limiter = Limiter(key_func=get_remote_address)
 
 app = FastAPI(
     title="SaaS Backend API",
-    description="Production-style SaaS backend with auth, payments, caching, background jobs, rate limiting, logging, and testing.",
+    description="Production-style SaaS backend",
     version="1.0.0",
 )
 
@@ -31,7 +32,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(api_router, prefix="/api/v1")
+app.include_router(health.router, prefix="/api/v1/health", tags=["health"])
+app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
+app.include_router(payments.router, prefix="/api/v1/payments", tags=["payments"])
+app.include_router(tasks.router, prefix="/api/v1/tasks", tags=["tasks"])
 
 @app.on_event("startup")
 async def startup_event():
@@ -40,5 +45,5 @@ async def startup_event():
 
 @app.get("/")
 @limiter.limit("5/minute")
-async def root(request):
+async def root(request: Request):
     return {"message": "Welcome to SaaS Backend API"}

@@ -5,8 +5,6 @@ from app.db.session import get_db
 from app.models.user import User
 from app.schemas.user import UserCreate, UserLogin, Token, UserOut
 from app.core.security import get_password_hash, verify_password, create_access_token
-from datetime import timedelta
-from app.core.config import settings
 
 router = APIRouter()
 

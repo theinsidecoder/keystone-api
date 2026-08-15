@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class CheckoutSessionRequest(BaseModel):
-    amount: int  # in cents
+    amount: int
     currency: str = "usd"
 
 class CheckoutSessionResponse(BaseModel):

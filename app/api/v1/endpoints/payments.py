@@ -1,5 +1,5 @@
 import stripe
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.deps import get_current_user
 from app.db.session import get_db
@@ -8,7 +8,6 @@ from app.models.payment import Payment
 from app.schemas.payment import CheckoutSessionRequest, CheckoutSessionResponse
 from app.core.config import settings
 from sqlalchemy import select
-import json
 
 router = APIRouter()
 stripe.api_key = settings.STRIPE_SECRET_KEY
