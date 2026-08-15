@@ -1,10 +1,9 @@
 
-
 <div align="center">
-  <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=200&h=200&fit=crop&crop=faces" width="120" height="120" style="border-radius:50%"/>
-  <h1>⚡ SaaS Backend API</h1>
-  <p><em>Production-grade backend for modern SaaS applications — built with FastAPI, PostgreSQL, Redis, Celery, and Stripe.</em></p>
-  
+  <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=120&h=120&fit=crop&crop=faces" width="120" height="120" style="border-radius:50%"/>
+  <h1>⚡ Keystone API</h1>
+  <p><em>The foundational backend for modern SaaS applications – built with FastAPI, PostgreSQL, Redis, Celery, and Stripe.</em></p>
+
   [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
   [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
   [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org)
@@ -20,9 +19,9 @@
 
 ## 📖 Table of Contents
 
-- [Why This Project?](#-why-this-project)
 - [✨ Features](#-features)
 - [🧠 Architecture](#-architecture)
+- [🖼 Project Showcase](#-project-showcase)
 - [🛠 Tech Stack](#-tech-stack)
 - [📁 Project Structure](#-project-structure)
 - [🚀 Quick Start](#-quick-start)
@@ -36,22 +35,7 @@
 - [🌍 Deployment](#-deployment)
 - [🤝 Contributing](#-contributing)
 - [📜 License](#-license)
-- [🙏 Acknowledgements](#-acknowledgements)
 - [👨‍💻 About the Developer](#-about-the-developer)
-
----
-
-## 🎯 Why This Project?
-
-Most tutorials stop at "Hello World" or a single endpoint. This project is different. It's a **complete, production-ready SaaS backend** that implements the core building blocks every real-world subscription product needs — authentication, payments, background processing, caching, rate limiting, and robust testing.
-
-I built this to serve as a **reference architecture** for developers who want to launch a SaaS without reinventing the wheel. It's designed with clean separation of concerns, async SQLAlchemy, and best practices gleaned from real production systems.
-
-**Key design principles:**
-- ✅ **Scalable by default** — modular components can be swapped or extended.
-- ✅ **Developer-friendly** — interactive Swagger docs, easy setup, sensible defaults.
-- ✅ **Production-grade** — Dockerized, with structured logging and comprehensive tests.
-- ✅ **Zero-cost to start** — works with SQLite and in-memory fallbacks for local dev.
 
 ---
 
@@ -79,29 +63,63 @@ I built this to serve as a **reference architecture** for developers who want to
 
 The backend follows a **layered architecture** with clear separation of concerns:
 
-```mermaid
-graph TB
-    Client[Client / Browser] -->|HTTP Requests| API[FastAPI App]
-    API --> Auth[Authentication Middleware]
-    API --> Rate[Rate Limiter]
-    API --> Routes[API Router v1]
-    Routes --> AuthEnd[Auth Endpoints]
-    Routes --> UserEnd[User Endpoints]
-    Routes --> PayEnd[Payment Endpoints]
-    Routes --> TaskEnd[Task Endpoints]
-    Routes --> HealthEnd[Health Endpoints]
-    AuthEnd --> Service[Service Layer]
-    UserEnd --> Service
-    PayEnd --> Service
-    TaskEnd --> Service
-    Service --> DB[(PostgreSQL / SQLite)]
-    Service --> Cache[(Redis / In-Memory)]
-    Service --> Celery[Celery Worker]
-    Celery --> Broker[Message Broker]
-    Celery --> Cache
-    PayEnd --> Stripe[Stripe API]
-    Stripe --> Webhook[Webhook Handler]
 ```
+┌─────────────────────────────────────────────────────────────┐
+│                       FastAPI Application                   │
+│  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌──────────┐ │
+│  │  Routes   │→│ Services  │→│  Models   │→│   DB     │ │
+│  └───────────┘  └───────────┘  └───────────┘  └──────────┘ │
+│        ↓              ↓              ↓              ↓       │
+│  Auth / Payments / Users / Tasks / Health                  │
+└─────────────────────────────────────────────────────────────┘
+                    ↓               ↓
+            ┌───────────┐      ┌───────────┐
+            │   Redis   │      │ PostgreSQL│
+            │  (Cache)  │      │  (Database)│
+            └───────────┘      └───────────┘
+                    ↓
+            ┌───────────┐
+            │   Celery  │
+            │  Worker   │
+            └───────────┘
+```
+
+*Mermaid diagram also available in the GitHub repository.*
+
+---
+
+## 🖼 Project Showcase
+
+Here are **15 high-quality images** that capture the essence and functionality of this SaaS backend.  
+*(All images are open-source from Unsplash.)*
+
+<table>
+  <tr>
+    <td align="center"><img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop" width="300" alt="API Docs"/><br/><sub><b>1. Swagger API Docs</b></sub></td>
+    <td align="center"><img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&h=400&fit=crop" width="300" alt="JWT Auth"/><br/><sub><b>2. JWT Authentication</b></sub></td>
+    <td align="center"><img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&h=400&fit=crop" width="300" alt="Database Schema"/><br/><sub><b>3. Database Schema</b></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop" width="300" alt="Stripe Checkout"/><br/><sub><b>4. Stripe Checkout</b></sub></td>
+    <td align="center"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop" width="300" alt="Celery Worker"/><br/><sub><b>5. Celery Background Jobs</b></sub></td>
+    <td align="center"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=400&fit=crop" width="300" alt="Rate Limiting"/><br/><sub><b>6. Rate Limiting</b></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" width="300" alt="Logging"/><br/><sub><b>7. Structured Logging</b></sub></td>
+    <td align="center"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop" width="300" alt="Testing"/><br/><sub><b>8. Pytest Suite</b></sub></td>
+    <td align="center"><img src="https://images.unsplash.com/photo-1605745341112-85968b19335b?w=600&h=400&fit=crop" width="300" alt="Docker"/><br/><sub><b>9. Docker Deployment</b></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=600&h=400&fit=crop" width="300" alt="Live Demo"/><br/><sub><b>10. Live API on PythonAnywhere</b></sub></td>
+    <td align="center"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop" width="300" alt="Code Review"/><br/><sub><b>11. Clean Code Architecture</b></sub></td>
+    <td align="center"><img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&h=400&fit=crop" width="300" alt="Security"/><br/><sub><b>12. Security Best Practices</b></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&h=400&fit=crop" width="300" alt="Developer"/><br/><sub><b>13. Developer Experience</b></sub></td>
+    <td align="center"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop" width="300" alt="Team Collaboration"/><br/><sub><b>14. Scalable Team Collaboration</b></sub></td>
+    <td align="center"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop" width="300" alt="CI/CD"/><br/><sub><b>15. CI/CD Ready</b></sub></td>
+  </tr>
+</table>
 
 ---
 
@@ -126,7 +144,7 @@ graph TB
 ## 📁 Project Structure
 
 ```
-back-end-APIs-system/
+keystone-api/
 ├── app/
 │   ├── __init__.py
 │   ├── main.py                  # FastAPI app entry
@@ -191,8 +209,8 @@ back-end-APIs-system/
 
 ```bash
 # Clone the repository
-git clone https://github.com/theinsidecoder/back-end-APIs-system.git
-cd back-end-APIs-system
+git clone https://github.com/theinsidecoder/keystone-api.git
+cd keystone-api
 
 # Create virtual environment
 python -m venv venv
@@ -220,8 +238,8 @@ uvicorn app.main:app --reload
 <summary><b>🐳 Docker</b></summary>
 
 ```bash
-docker build -t saas-backend .
-docker run -p 8000:8000 --env-file .env saas-backend
+docker build -t keystone-api .
+docker run -p 8000:8000 --env-file .env keystone-api
 ```
 
 </details>
@@ -366,7 +384,7 @@ pytest
 
 ### Option 1: PythonAnywhere (Free, no credit card)
 
-Detailed step-by-step guide available [here](https://github.com/theinsidecoder/back-end-APIs-system/wiki/PythonAnywhere-Deployment).
+Detailed step-by-step guide available [here](https://github.com/theinsidecoder/keystone-api/wiki/PythonAnywhere-Deployment).
 
 ### Option 2: Render (Free tier)
 
@@ -379,8 +397,8 @@ Detailed step-by-step guide available [here](https://github.com/theinsidecoder/b
 ### Option 3: Docker (Any cloud)
 
 ```bash
-docker build -t saas-backend .
-docker run -p 8000:8000 --env-file .env saas-backend
+docker build -t keystone-api .
+docker run -p 8000:8000 --env-file .env keystone-api
 ```
 
 ---
@@ -411,7 +429,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - [Stripe](https://stripe.com) for payment processing
 - [Unsplash](https://unsplash.com) for beautiful open-source images
 - [Shields.io](https://shields.io) for badges
-- [Mermaid](https://mermaid.js.org) for diagrams
 
 ---
 
@@ -421,7 +438,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
   <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=faces" width="100" height="100" style="border-radius:50%"/>
   <h3>The Inside Coder</h3>
   <p>Full-Stack Developer & Open Source Enthusiast</p>
-  
+
   [![GitHub](https://img.shields.io/badge/GitHub-theinsidecoder-181717?style=for-the-badge&logo=github)](https://github.com/theinsidecoder)
   [![Twitter](https://img.shields.io/badge/Twitter-%40theinsidecoder-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/theinsidecoder)
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-theinsidecoder-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/theinsidecoder)
@@ -433,7 +450,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
   <sub>Built with ❤️ by <strong>The Inside Coder</strong></sub>
 </div>
 ```
-
-
-
 
